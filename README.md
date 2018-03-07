@@ -1,6 +1,8 @@
 ## Data Schemes
 
-All `_update` keys stand for the time when the file of data was updated.
+The actual file may contain extra keys which are not documented here. Those keys were just not striped out from the original data and may be removed in the future.
+
+Current version: 2.0
 
 ### day/*.json
 
@@ -8,9 +10,9 @@ One file for every day (currently). The filename is the date when the data was u
 
 ```js
 {
-  _update: Number, // Date in milliseconds
+  _update: Number, // Date in milliseconds, when the file was updated
   world_lived: Number, // How long has the server been running in seconds
-  players: [ Player, ... ], // The latest status of all players till this day
+  players: [ Player, ... ], // The latest state of all players till this day
 }
 ```
 
@@ -57,14 +59,6 @@ Where `PlayerNameRecord` is:
 }
 ```
 
-### players.json
-
-There is only one players.json among all the time, which contains the latest version of `PlayerData` of every player. This file is usually for the use of player info index, so there is no `_update` key in this file.
-
-```js
-[ PlayerData, ... ]
-```
-
 ### player/*.json
 
 One file for each player, the filename is the `uuid_short` of the player.
@@ -80,3 +74,16 @@ One file for each player, the filename is the `uuid_short` of the player.
   },
 }
 ```
+
+### players.json
+
+Contains the latest version of `PlayerData` of every player. Usually used for player info index.
+
+```js
+[ PlayerData, ... ]
+```
+
+### Changes
+
+- **2.0**
+  + `day/*.json`: Root key `data_upate` renamed to `_update`.

@@ -1,68 +1,75 @@
+/**
+ * Data version: 2.0
+ */
+
 const fs = require('fs-extra')
 const path = require('path')
 
 module.exports = function merge(inputDir, outputDir) {
+  const TMP_DIR = inputDir
+  const info = fs.readJsonSync(path.resolve(TMP_DIR, 'info.json'))
+  const uuids = fs.readJsonSync(path.resolve(TMP_DIR, 'players.json')).map(p => p.uuid)
+  const D = new Date(info.lastUpdate)
+  const DATE = `${D.getFullYear()}-${(D.getMonth() + 101 + '').slice(1)}-${(D.getDate() + 100 + '').slice(1)}`
+
   const PLAYERS_FILE = path.resolve(outputDir, 'players.json')
   const DAY_DIR = path.resolve(outputDir, 'day')
   const PLAYER_DIR = path.resolve(outputDir, 'player')
 
-  fs.ensureDirSync(DAY_DIR)
-  fs.ensureDirSync(PLAYER_DIR)
-
-  const TMP_DIR = inputDir
-  const info = fs.readJsonSync(path.resolve(TMP_DIR, 'info.json'))
-  const uuids = fs.readJsonSync(path.resolve(TMP_DIR, 'players.json')).map(p => p.uuid)
-
-  const D = new Date(info.lastUpdate)
-  const DATE = `${D.getFullYear()}-${(D.getMonth() + 101 + '').slice(1)}-${(D.getDate() + 100 + '').slice(1)}`
-
-  const outputs = {
-    players: fs.pathExistsSync(PLAYERS_FILE) ? fs.readJsonSync(PLAYERS_FILE) : [],
-    day: {
-      world_time: info.worldTime,
-      data_update: info.lastUpdate,
-      players: [],
-    },
+  const PLAYERS = fs.readJsonSync(PLAYERS_FILE, {throws: false}) || []
+  const DAY = {
+    _update: info.lastUpdate,
+    world_time: info.worldTime,
+    players: [],
   }
 
   for (const uuid of uuids) {
-    const data = fs.readJsonSync(path.resolve(TMP_DIR, uuid + '.json'))
-    let hasUpdate = false
+    const input = fs.readJsonSync(path.resolve(TMP_DIR, uuid + '.json'))
+    let needUpdate = null
 
-    // write players.json
+    /**
+     * Write to player/*.json
+     */
     {
-      const idx = outputs.players.findIndex(p => p.uuid_short === uuid)
-      if (idx >= 0) {
-        if (outputs.players[idx].seen < data.data.seen) {
-          hasUpdate = true
-        }
-        if (outputs.players[idx].lastUpdate < data.data.lastUpdate) {
-          outputs.players[idx] = data.data
-        }
-      } else {
-        outputs.players.push(data.data)
-        hasUpdate = true
-      }
-    }
-
-    // write player/xxxx.json
-    if (hasUpdate) {
-      const file = path.resolve(PLAYER_DIR, uuid + '.json')
+      const file = path.resolve(PLAYER_DIR, input.data.uuid_short + '.json')
       const json = fs.pathExistsSync(file) ? fs.readJsonSync(file) : {
-        uuid: data.data.uuid,
-        uuid_short: data.data.uuid_short,
+        uuid: input.data.uuid,
+        uuid_short: input.data.uuid_short,
         data: {},
       }
-      json.data[data.data.lastUpdate] = data
-      fs.outputJsonSync(file, json)
+      if (!json.data[input.data.lastUpdate]) {
+        json.data[input.data.lastUpdate] = input
+        fs.outputJsonSync(file, json)
+        needUpdate = true
+      } else {
+        needUpdate = false
+      }
     }
 
-    // write day/xxxx-xx-xx.json
+    /**
+     * Write to players.json
+     */
+    if (needUpdate) {
+      // Find player from exist players.json
+      const idx = PLAYERS.findIndex(p => p.uuid_short === uuid)
+      // If found, replace the data
+      if (idx >= 0) {
+        PLAYERS[idx] = input.data
+        // If not, append new data
+      } else {
+        PLAYERS.push(input.data)
+      }
+    }
+
+    /**
+     * Write to day/*.json
+     * Because this file is the final state of all players, so every data needs to be contained.
+     */
     {
-      outputs.day.players.push(data)
+      DAY.players.push(input)
     }
   }
 
-  fs.outputJsonSync(PLAYERS_FILE, outputs.players)
-  fs.outputJsonSync(path.resolve(DAY_DIR, DATE + '.json'), outputs.day)
+  fs.outputJsonSync(PLAYERS_FILE, PLAYERS)
+  fs.outputJsonSync(path.resolve(DAY_DIR, DATE + '.json'), DAY)
 }
