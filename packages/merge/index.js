@@ -19,7 +19,7 @@ module.exports = function merge(inputDir, outputDir) {
   const PLAYERS = fs.readJsonSync(PLAYERS_FILE, {throws: false}) || []
   const DAY = {
     _update: info.lastUpdate,
-    world_time: info.worldTime,
+    world_lived: info.worldTime,
     players: [],
   }
 
@@ -38,7 +38,10 @@ module.exports = function merge(inputDir, outputDir) {
         data: {},
       }
       if (!json.data[input.data.lastUpdate]) {
-        json.data[input.data.lastUpdate] = input
+        json.data[input.data.lastUpdate] = {
+          ...input,
+          _update: input.data.lastUpdate,
+        }
         fs.outputJsonSync(file, json)
         needUpdate = true
       } else {
