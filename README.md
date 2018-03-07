@@ -86,4 +86,4 @@ Contains the latest version of `PlayerData` of every player. Usually used for pl
 ### Changes
 
 - **2.0**
-  + `day/*.json`: Root key `data_upate` renamed to `_update`.
+  + `day/*.json`: Root key `data_update` renamed to `_update`.
