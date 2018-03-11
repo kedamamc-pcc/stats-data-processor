@@ -11,7 +11,7 @@ module.exports = function (inputFile, outputDir) {
     const DAY = {
       _update,
       world_lived: input.world_lived,
-      players: input.players.map(p => ({
+      players: input.players.filter(p => p.data.uuid).map(p => ({
         _update,
         ...p,
       })),
@@ -20,10 +20,12 @@ module.exports = function (inputFile, outputDir) {
   }
 
   const PLAYERS_FILE = path.resolve(outputDir, 'players.json')
-  const PLAYERS = fs.readJsonSync(PLAYERS_FILE)
+  const PLAYERS = fs.readJsonSync(PLAYERS_FILE, {throws: false}) || []
 
   for (const p of input.players) {
     const _uuid = p.data.uuid_short
+
+    if (!_uuid) continue
 
     /* Output player/*.json */
     {
@@ -34,7 +36,7 @@ module.exports = function (inputFile, outputDir) {
         data: {},
       }
       if (!PLAYER.data[_update]) {
-        PLAYER.data[_update] = input
+        PLAYER.data[_update] = p
         fs.outputJsonSync(outputFile, PLAYER)
       }
     }

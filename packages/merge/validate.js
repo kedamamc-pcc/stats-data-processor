@@ -5,6 +5,7 @@ const VERSION = '2.0'
 
 module.exports = function validate(file) {
   console.log(`Target data version: ${VERSION}`)
+  console.log(`Validating file: ${file}`)
 
   const filename = path.basename(file, '.json')
   const data = fs.readJsonSync(file)
@@ -25,23 +26,27 @@ module.exports = function validate(file) {
 
 class Day {
   static validate(data) {
-    if (!data._update) console.error('`_update` is not found')
+    let result = true
+
+    if (!data._update) console.error('`_update` is missing')
     else if (typeof data._update === 'number') console.error('`_update` is not a number')
 
-    if (!data.world_lived) console.error('`world_lived` is not found')
+    if (!data.world_lived) console.error('`world_lived` is missing')
     else if (typeof data.world_lived === 'number') console.error('`world_lived` is not a number')
 
-    if (!data.players) console.error('`players` is not found')
+    if (!data.players) console.error('`players` is missing')
     else if (data.players instanceof Array) console.error('`players` is not an array')
+
+    return result
   }
 }
 
 class Player {
   static validate(data) {
-    if (!data._update) console.error('`_update` is not found in player')
+    if (!data._update) console.error('`_update` is missing')
     else if (typeof data._update === 'number') console.error('`_update` is not a number')
 
-    if (!data.stats) console.error('`stats` is not found')
+    if (!data.stats) console.error('`stats` is missing')
   }
 }
 
