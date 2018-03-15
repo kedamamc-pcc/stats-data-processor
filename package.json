@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "axios": "^0.18.0",
     "fs-extra": "^5.0.0",
     "got": "^8.1.0"
   }
