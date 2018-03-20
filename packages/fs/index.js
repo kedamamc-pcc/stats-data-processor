@@ -29,8 +29,11 @@ module.exports = class StatsFS {
 
     if (['day', 'player'].includes(type)) {
       const file = path.join(this.dataDir, pth + '.json.gz')
-      const str = pako.ungzip(fs.readFileSync(file), {to: 'string'})
-      return JSON.parse(str)
+      if (fs.existsSync(file)) {
+        return JSON.parse(pako.ungzip(fs.readFileSync(file), {to: 'string'}))
+      } else {
+        return null
+      }
     } else {
       const file = path.join(this.dataDir, pth + '.json')
       return fs.readJsonSync(file)
