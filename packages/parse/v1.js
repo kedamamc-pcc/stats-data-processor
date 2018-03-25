@@ -1,5 +1,5 @@
 const fs = require('fs-extra')
-const minify = require('./minify-stats')
+const minify = require('./helper/minify-stats')
 
 function parseV1(file) {
   const json = fs.readJsonSync(file)

@@ -19,8 +19,8 @@ module.exports = function (inputFile, outputDir) {
     fs.outputJsonSync(path.resolve(outputDir, `day/${DATE}.json`), DAY)
   }
 
-  const PLAYERS_FILE = path.resolve(outputDir, 'players.json')
-  const PLAYERS = fs.readJsonSync(PLAYERS_FILE, {throws: false}) || []
+  // const PLAYERS_FILE = path.resolve(outputDir, 'players.json')
+  // const PLAYERS = fs.readJsonSync(PLAYERS_FILE, {throws: false}) || []
 
   for (const p of input.players) {
     const _uuid = p.data.uuid_short
@@ -42,14 +42,14 @@ module.exports = function (inputFile, outputDir) {
     }
 
     /* Output players.json */
-    {
-      const _idx = PLAYERS.findIndex(pd => pd.uuid_short === _uuid)
-      // Because all 1.0 files are old data, so only non-exist players need to be pushed.
-      if (_idx < 0) {
-        PLAYERS.push(p.data)
-      }
-    }
+    // {
+    //   const _idx = PLAYERS.findIndex(pd => pd.uuid_short === _uuid)
+    //   // Because all 1.0 files are old data, so only non-exist players need to be pushed.
+    //   if (_idx < 0) {
+    //     PLAYERS.push(p.data)
+    //   }
+    // }
   }
 
-  fs.outputJsonSync(PLAYERS_FILE, PLAYERS)
+  // fs.outputJsonSync(PLAYERS_FILE, PLAYERS)
 }

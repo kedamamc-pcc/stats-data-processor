@@ -1,11 +1,11 @@
-const fs = require('fs-extra')
 const DataFile = require('./data-file')
 
 class PlayerJson extends DataFile {
   constructor (file) {
-    super()
+    super(file)
 
-    const json = fs.readJsonSync(file, {throws: false}) || {}
+    const json = JSON.parse(this.raw) || {}
+    delete this.raw
 
     this.uuid = json.uuid
     this.data = json.data || {}

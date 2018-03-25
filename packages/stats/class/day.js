@@ -1,11 +1,11 @@
-const fs = require('fs-extra')
 const DataFile = require('./data-file')
 
 class DayJson extends DataFile {
   constructor (file) {
-    super()
+    super(file)
 
-    const json = fs.readJsonSync(file, {throws: false}) || {}
+    const json = JSON.parse(this.raw) || {}
+    delete this.raw
 
     this.world_lived = json.world_lived || 0
     this.players = json.players || []

@@ -1,0 +1,42 @@
+{
+  "update": 1492644105863,
+  "world_lived": 11930549.65,
+  "players": [
+    {
+      "stats": {
+        "stat.mineBlock.minecraft.web": 135,
+        "stat.craftItem.minecraft.chorus_fruit_popped": 64,
+        "stat.useItem.minecraft.bow": 3121,
+        "stat.drop.minecraft.gunpowder": 357,
+        "stat.pickup.minecraft.dark_oak_boat": 6,
+        "stat.breakItem.minecraft.iron_pickaxe": 7,
+        "stat.killEntity.Enderman": 18874,
+        "stat.entityKilledBy.Shulker": 1,
+        "stat.jump": 172967,
+        "achievement.killWither": 1,
+        "achievement.exploreAllBiomes": {
+          "value": 0,
+          "progress": [
+            "Hell"
+          ]
+        },
+        "something": 233
+      },
+      "data": {
+        "_seen": 1492620269399,
+        "time_start": 1487765959244,
+        "time_last": 1492620269399,
+        "time_lived": 1845236.9,
+        "uuid": "eac8b396-2e8e-4fb8-8cf3-cb249c536ba6",
+        "uuid_short": "eac8b3962e8e4fb88cf3cb249c536ba6",
+        "playername": "leeeeder",
+        "names": [
+          {
+            "name": "leeeeder"
+          }
+        ],
+        "banned": false
+      }
+    }
+  ]
+}

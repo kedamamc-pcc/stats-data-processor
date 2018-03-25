@@ -1,6 +1,6 @@
 const fs = require('fs-extra')
 const path = require('path')
-const minify = require('./minify-stats')
+const minify = require('./helper/minify-stats')
 
 function parseV2 (dir) {
   const infoJson = fs.readJsonSync(path.join(dir, 'info.json'))
@@ -8,7 +8,7 @@ function parseV2 (dir) {
   return {
     _version: '2.2',
     world: {
-      time_lived: infoJson.worldTime,
+      world_lived: infoJson.worldTime,
     },
     players: fs.readdirSync(dir)
       .filter(fn => /^[0-9a-f]{32}\.json$/.test(fn))

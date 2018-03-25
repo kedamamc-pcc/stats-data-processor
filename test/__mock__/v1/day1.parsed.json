@@ -1,0 +1,44 @@
+{
+  "_version": "2.2",
+  "world": {
+    "world_lived": 11930549.65
+  },
+  "players": [
+    {
+      "data": {
+        "uuid": "eac8b3962e8e4fb88cf3cb249c536ba6",
+        "name": "leeeeder",
+        "names": [
+          {
+            "name": "leeeeder"
+          }
+        ],
+        "time_start": 1487765959244,
+        "time_last": 1492620269399,
+        "time_lived": 1845236.9,
+        "banned": false
+      },
+      "stats": {
+        "mineBlock.web": 135,
+        "craftItem.chorus_fruit_popped": 64,
+        "useItem.bow": 3121,
+        "drop.gunpowder": 357,
+        "pickup.dark_oak_boat": 6,
+        "breakItem.iron_pickaxe": 7,
+        "killEntity.Enderman": 18874,
+        "entityKilledBy.Shulker": 1,
+        "jump": 172967,
+        "something": 233
+      },
+      "achievements": {
+        "killWither": 1,
+        "exploreAllBiomes": {
+          "value": 0,
+          "progress": [
+            "Hell"
+          ]
+        }
+      }
+    }
+  ]
+}

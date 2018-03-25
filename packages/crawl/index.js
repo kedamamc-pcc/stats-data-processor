@@ -3,20 +3,31 @@ const path = require('path')
 const url = require('url')
 const fetch = require('./fetch')
 
-const DEFAULT_ORIGIN = 'https://stats.craft.moe/'
+module.exports = async function (origin, tmpDir, dataDir) {
+  log('Target NyaaStats version: 2.0')
 
-module.exports = async function (targetDir, config = {}) {
-  console.log('Start crawling...')
+  log('Downloading info.json')
+  const infoFile = path.join(tmpDir, 'info.json')
+  await fetch(url.resolve(origin, '/static/data/info.json'), infoFile)
+  const infoJson = fs.readJsonSync(infoFile)
 
-  const origin = config.origin || DEFAULT_ORIGIN
+  const _infoJson = dataDir && fs.readJsonSync(path.join(dataDir, 'info.json'))
+  if (!_infoJson || infoJson.lastUpdate <= _infoJson._update) {
+    log(`No updates found from ${origin}`)
+    return
+  }
 
-  const playersFile = path.resolve(targetDir, 'players.json')
+  log('Downloading players.json')
+  const playersFile = path.join(tmpDir, 'players.json')
   await fetch(url.resolve(origin, '/static/data/players.json'), playersFile)
-
   const playersJson = fs.readJsonSync(playersFile)
+
+  const _playersJson = fs.readJsonSync(path.join(dataDir, 'players.json'))
+  const playersDiff = playersJson.filter(p => p.seen >= _infoJson._update)
+
   for (const p of playersJson) {
     const uuid = p.uuid
-    await fetch(url.resolve(origin, `/static/data/${uuid}/stats.json`), path.resolve(targetDir, uuid + '.json'))
+    await fetch(url.resolve(origin, `/static/data/${uuid}/stats.json`), path.resolve(tmpDir, uuid + '.json'))
   }
 
   /**********************************************************************************************/
@@ -70,4 +81,8 @@ module.exports = async function (targetDir, config = {}) {
   }
 
   // merge(TMP_DIR, config.merged_dir);
+}
+
+function log(msg) {
+  console.log(`[crawl] ${msg}`)
 }

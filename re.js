@@ -7,17 +7,20 @@ const DATA_DIR = './playground/output'
 
 const db = new StatsFS(DATA_DIR)
 const theInfo = {
-  _version: '2.1',
+  _version: '2.2',
 }
 const thePlayers = {
-  _version: '2.1',
+  _version: '2.2',
   players: [],
 }
 
 for (const fn of fs.readdirSync(V1_DIR).filter(fn => /^2017-04-\d\d\.json$/.test(fn)).sort()) {
+  // Each iteration starts a day
+
   const file = path.join(V1_DIR, fn)
   const input = fs.readJsonSync(file)
   const dayJson = db.readSync('day/' + theInfo.last_day) || {
+    _version: '2.2',
     _update: null,
     world_lived: null,
     players: [],
@@ -97,4 +100,12 @@ function mergeNames(local, update) {
 function formatDate(date) {
   const d = new Date(date)
   return `${d.getFullYear()}-${(d.getMonth() + 101 + '').slice(1)}-${(d.getDate() + 100 + '').slice(1)}`
+}
+
+function genPlayer(src) {
+  const player = {
+    uuid: src.data.uuid_short,
+    name: src.data.playername,
+    names: src
+  }
 }

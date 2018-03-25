@@ -1,0 +1,41 @@
+{
+  "stats": {
+    "stat.mineBlock.minecraft.web": 234,
+    "stat.craftItem.minecraft.chorus_fruit_popped": 64,
+    "stat.useItem.minecraft.bow": 3121,
+    "stat.drop.minecraft.gunpowder": 357,
+    "stat.pickup.minecraft.dark_oak_boat": 6,
+    "stat.breakItem.minecraft.iron_pickaxe": 7,
+    "stat.killEntity.Enderman": 18874,
+    "stat.entityKilledBy.Shulker": 1,
+    "stat.jump": 172967
+  },
+  "advancements": {
+    "minecraft:recipes/tools/fishing_rod": {
+      "criteria": {
+        "has_string": "2017-06-15 21:10:11 +0800"
+      },
+      "done": true
+    }
+  },
+  "data": {
+    "seen": 1518496697345,
+    "time_start": 1487765959244,
+    "time_last": 1518496697345,
+    "time_lived": 3063637.6,
+    "playername": "Kanna_leeder",
+    "names": [
+      {
+        "name": "Kanna_leeder",
+        "changedToAt": 1490033114000
+      },
+      {
+        "name": "leeeeder"
+      }
+    ],
+    "uuid_short": "eac8b3962e8e4fb88cf3cb249c536ba6",
+    "lastUpdate": 1518578002673,
+    "uuid": "eac8b396-2e8e-4fb8-8cf3-cb249c536ba6",
+    "banned": false
+  }
+}

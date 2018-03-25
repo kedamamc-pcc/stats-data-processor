@@ -3,7 +3,7 @@ const DataFile = require('./data-file')
 
 class PlayersJson extends DataFile {
   constructor (file) {
-    super()
+    super(file)
 
     const json = fs.readJsonSync(file, {throws: false}) || {}
 
@@ -12,14 +12,14 @@ class PlayersJson extends DataFile {
 
   merge(parsedPlayerData) {
     for (const parsed of [].concat(parsedPlayerData)) {
-      const idx = this.players.findIndex(p => p.uuid === parsed.data.uuid)
+      const idx = this.players.findIndex(p => p.uuid === parsed.uuid)
       if (idx < 0) {
-        this.players.push(parsed.data)
+        this.players.push(parsed)
       } else {
         const found = this.players[idx]
         this.players[idx] = {
-          ...parsed.data,
-          names: mergeNames(found.names, parsed.data.names),
+          ...parsed,
+          names: mergeNames(found.names, parsed.names),
         }
       }
     }
